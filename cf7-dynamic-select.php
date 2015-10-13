@@ -1,10 +1,10 @@
 <?php 
 
 	/*
-		Plugin Name: Contact Form 7 - Dynamic Select Extension
+		Plugin Name: Dynamic Select for Contact Form 7
 		Plugin URI: https://github.com/Hube2/contact-form-7-dynamic-select-extension
 		Description: Provides a dynamic select field that accepts any shortcode to generate the select values. Requires Contact Form 7
-		Version: 1.1.1
+		Version: 1.1.2
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2/
 		License: GPL
@@ -154,7 +154,7 @@
 			$invalid = 'false';
 			if ($validation_error) {
 				$invalid = true;
-				$atts = ' aria-invalid="'.$invalid.'"';
+				$atts .= ' aria-invalid="'.$invalid.'"';
 			}
 			
 			
@@ -190,8 +190,6 @@
 			$wpcf7_contact_form = WPCF7_ContactForm::get_current();
 			$type = $tag['type'];
 			$name = $tag['name'];
-			$result['valid'] = false;
-			$result['reason'][$name] = $wpcf7_contact_form->message('invalid_required');
 			if ($type != 'dynamicselect*') {
 				return $result;
 			}
@@ -212,6 +210,8 @@
 			} // end if set
 			if (!$value_found) {
 				$result->invalidate($tag, wpcf7_get_message('invalid_required'));
+				$result['valid'] = false;
+				$result['reason'][$name] = $wpcf7_contact_form->message('invalid_required');
 			}
 			return $result;
 		} // end public function validation_filter
